@@ -8,4 +8,4 @@ So far, this program only logs you in. Clicking the link expires the cookie.
 
 # Encrytpion
 
-Use openssl to make a private key called "domo.rsa" and a related public key called "domo.ras.pub". Put them in the "static" direcory.
+Use openssl to make a private key called "demo.rsa" and a related public key called "demo.rsa.pub". Put them in the "static" direcory.
