@@ -10,7 +10,7 @@ import (
 	"models"
 	"net/http"
 	"os"
-	"time"
+	//	"time"
 )
 
 /*
@@ -38,11 +38,18 @@ func Testing(w http.ResponseWriter, r *http.Request) {
 	var user models.User
 	j, _ := json.Marshal(obj)
 	json.Unmarshal(j, &user)
-	cookie2 := http.Cookie{Name: "jwtoauth1",
-		Value:   tokenString,
-		Expires: time.Now(),
-	}
-	http.SetCookie(w, &cookie2)
-	templ, _ := template.ParseFiles("views/testing.html")
-	templ.Execute(w, user.Name)
+	/*	cookie2 := http.Cookie{Name: "jwtoauth1",
+			Value:   tokenString,
+			Expires: time.Now(),
+		}
+	http.SetCookie(w, &cookie2) */ // Keep this code around for logging off
+	templ, _ := template.ParseFiles("views/layout.tpl", "views/testing.tpl")
+	templ.Execute(w, struct {
+		Title     string
+		User      models.User
+		Languages map[string]string
+	}{Title: "Add A Paste",
+		User:      user,
+		Languages: models.Languages,
+	})
 }
