@@ -3,7 +3,7 @@ package controllers
 
 import (
 	//	"encoding/json"
-	"fmt"
+	//	"log"
 	//	jwt "github.com/dgrijalva/jwt-go"
 	"html/template"
 	//	"io/ioutil"
@@ -29,7 +29,7 @@ var defaultUser = models.User{
 }
 
 func Index(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("Running index.go")
+	//	log.Println("Running index.go")
 
 	tmpl, err := template.ParseFiles("views/index.html")
 	if err != nil {

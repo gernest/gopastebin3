@@ -25,19 +25,21 @@ func Testing(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("Failure to read public key: %v", e)
 		os.Exit(1)
 	}
-	cookie, err := r.Cookie("jwtoauth1")
-	if err != nil {
-		fmt.Println("Cookie retrieval error:", err)
-		os.Exit(2)
-	}
-	tokenString := cookie.Value
-	token, _ := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
-		return publicKey, nil
-	})
-	obj := token.Claims["User"]
 	var user models.User
-	j, _ := json.Marshal(obj)
-	json.Unmarshal(j, &user)
+	cookie, err := r.Cookie("jwtoauth1")
+	if err == nil {
+
+		tokenString := cookie.Value
+		token, _ := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+			return publicKey, nil
+		})
+		obj := token.Claims["User"]
+
+		j, _ := json.Marshal(obj)
+		json.Unmarshal(j, &user)
+	} else {
+		user = defaultUser
+	}
 	/*	cookie2 := http.Cookie{Name: "jwtoauth1",
 			Value:   tokenString,
 			Expires: time.Now(),
@@ -45,11 +47,15 @@ func Testing(w http.ResponseWriter, r *http.Request) {
 	http.SetCookie(w, &cookie2) */ // Keep this code around for logging off
 	templ, _ := template.ParseFiles("views/layout.tpl", "views/testing.tpl")
 	templ.Execute(w, struct {
-		Title     string
-		User      models.User
-		Languages map[string]string
+		Title        string
+		User         models.User
+		Languages    map[string]string
+		Publicpastes []models.Paste
+		Mypastes     []models.Paste
 	}{Title: "Add A Paste",
-		User:      user,
-		Languages: models.Languages,
+		User:         user,
+		Languages:    models.Languages,
+		Publicpastes: models.PublicPastes(),
+		Mypastes:     models.MyPastes(user.Id),
 	})
 }

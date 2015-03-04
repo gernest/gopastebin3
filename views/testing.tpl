@@ -10,6 +10,8 @@
 	<option value={{$k}}>{{$k}}</option>
 	{{end}}
 </select>
+<p><input type="radio" name="ispublic" value="true" checked>Public</input>
+   <input type="radio" name="ispublic" value="false">Private</input></p>
 <p><input type="submit" value="Create Pastebin" /></p>
 </form>
 {{end}}
