@@ -53,7 +53,7 @@ func MyPastes(id string) []Paste {
 	}
 	collection := session.DB("gopastebin3-3").C("pastes")
 	var pastes []Paste
-	err := collection.Find(bson.M{"userid": id}).All(&pastes)
+	err := collection.Find(bson.M{"userid": id, "ispublic": false}).All(&pastes)
 	if err != nil {
 		panic(err)
 	}
